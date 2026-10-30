@@ -1,0 +1,415 @@
+/* =========================================================
+   Design tokens
+   ========================================================= */
+:root {
+  /* Primary */
+  --tomato: hsl(4, 100%, 67%);
+  --tomato-pink: hsl(347, 100%, 67%); /* gradient partner for hover */
+
+  /* Neutral */
+  --dark-slate: hsl(234, 29%, 20%);
+  --charcoal: hsl(235, 18%, 26%);
+  --grey: hsl(231, 7%, 60%);
+  --white: hsl(0, 0%, 100%);
+
+  /* Error tints */
+  --error-bg: hsla(4, 100%, 67%, 0.15);
+
+  /* Typography */
+  --font: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --fs-body: 1rem;       /* 16px */
+  --fs-small: 0.75rem;   /* 12px */
+  --fs-title-mobile: 2.5rem;  /* 40px */
+  --fs-title-desktop: 3.5rem; /* 56px */
+
+  /* Shape */
+  --radius-card: 2.25rem;
+  --radius-control: 0.5rem;
+
+  --transition: 0.2s ease;
+}
+
+/* =========================================================
+   Minimal reset for cross-browser consistency
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--dark-slate);
+  background-color: var(--white); /* mobile: card fills the screen */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   Page layout (mobile first)
+   ========================================================= */
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ---------- Sign-up card ---------- */
+.card {
+  display: flex;
+  flex-direction: column-reverse; /* illustration on top on mobile */
+  background-color: var(--white);
+}
+
+.card__illustration {
+  height: 284px;
+  overflow: hidden;
+  border-radius: 0 0 1rem 1rem;
+}
+
+.illustration {
+  width: 100%;
+  height: 100%;
+}
+
+.card__content {
+  padding: 2.5rem 1.5rem;
+}
+
+.card__title {
+  font-size: var(--fs-title-mobile);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.card__intro {
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- Benefits list with custom check icons ---------- */
+.benefits {
+  list-style: none;
+  display: grid;
+  gap: 0.625rem;
+  margin-bottom: 2.5rem;
+}
+
+.benefits__item {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.benefits__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.3125rem;
+  height: 1.3125rem;
+  border-radius: 50%;
+  background-color: var(--tomato);
+  /* white check mark drawn as an inline SVG */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath d='M6 10.5l3 3 6-6' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+/* =========================================================
+   Form
+   ========================================================= */
+.form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.form__group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.form__label,
+.form__error {
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.form__error {
+  color: var(--tomato);
+  text-align: right;
+}
+
+.form__input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: 1px solid hsla(231, 7%, 60%, 0.5);
+  border-radius: var(--radius-control);
+  background-color: var(--white);
+  color: var(--dark-slate);
+  transition: border-color var(--transition), box-shadow var(--transition),
+    background-color var(--transition), color var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form__input::placeholder {
+  color: var(--grey);
+  opacity: 1; /* Firefox lowers placeholder opacity by default */
+}
+
+/* Hover & focus states */
+.form__input:hover {
+  border-color: var(--dark-slate);
+}
+
+.form__input:focus {
+  outline: none;
+}
+
+.form__input:focus-visible {
+  border-color: var(--dark-slate);
+  box-shadow: 0 0 0 3px hsla(234, 29%, 20%, 0.15);
+}
+
+/* Error state (set via aria-invalid from JavaScript) */
+.form__input[aria-invalid="true"] {
+  border-color: var(--tomato);
+  background-color: var(--error-bg);
+  color: var(--tomato);
+}
+
+.form__input[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px hsla(4, 100%, 67%, 0.25);
+}
+
+/* Valid state: subtle confirmation while typing */
+.form__input[aria-invalid="false"].is-touched {
+  border-color: hsl(150, 50%, 42%);
+}
+
+/* =========================================================
+   Button
+   ========================================================= */
+.btn {
+  position: relative;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-control);
+  background-color: var(--dark-slate);
+  color: var(--white);
+  font-weight: 700;
+  cursor: pointer;
+  isolation: isolate;
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+/* Gradient layer that fades in on hover (gradients can't be transitioned directly) */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(to right, var(--tomato-pink), var(--tomato));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  opacity: 1;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  box-shadow: 0 16px 32px hsla(4, 100%, 67%, 0.5);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--dark-slate);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   Success message
+   ========================================================= */
+.success {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 2.5rem 1.5rem;
+  background-color: var(--white);
+}
+
+.success__content {
+  margin-top: 30%;
+}
+
+.success__icon {
+  margin-bottom: 2.5rem;
+}
+
+.success__title {
+  font-size: var(--fs-title-mobile);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.success__title:focus {
+  outline: none;
+}
+
+.success__email {
+  font-weight: 700;
+  word-break: break-word;
+}
+
+/* Gentle reveal when the success state appears */
+.success:not([hidden]),
+.card:not([hidden]) {
+  animation: fade-in 0.35s ease both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   Tablet (≥ 600px): centered card on dark background
+   ========================================================= */
+@media (min-width: 37.5em) {
+  body {
+    background-color: var(--charcoal);
+  }
+
+  .page {
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 38rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.25);
+  }
+
+  .card__illustration {
+    height: 320px;
+    border-radius: 1rem;
+  }
+
+  .card__content {
+    padding: 2.5rem 1.5rem 1.5rem;
+  }
+
+  .success {
+    min-height: auto;
+    max-width: 31.5rem;
+    padding: 3rem 4rem 4rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.25);
+    gap: 2.5rem;
+  }
+
+  .success__content {
+    margin-top: 0;
+  }
+
+  .success__icon {
+    margin-bottom: 2rem;
+  }
+
+  .success__title {
+    font-size: var(--fs-title-desktop);
+  }
+}
+
+/* =========================================================
+   Desktop (≥ 900px): side-by-side layout
+   ========================================================= */
+@media (min-width: 56.25em) {
+  .card {
+    flex-direction: row; /* illustration moves to the right */
+    align-items: center;
+    gap: 4rem;
+    max-width: 58rem;
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+  }
+
+  .card__content {
+    flex: 1;
+    padding: 0;
+  }
+
+  .card__title {
+    font-size: var(--fs-title-desktop);
+  }
+
+  .card__illustration {
+    flex: 0 0 25rem;
+    height: 37rem;
+  }
+}
+
+/* =========================================================
+   Accessibility: respect reduced-motion preferences
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
