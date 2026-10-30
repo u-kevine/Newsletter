@@ -103,7 +103,6 @@ Also checked with browser dev tools at common device widths (375px, 768px, 1440p
 
 - Gradients can't be transitioned directly, so the button hover uses a `::before` pseudo-element with a gradient whose opacity fades in.
 - Using `aria-invalid` as a styling hook keeps the visual and accessible states in sync.
-- Delaying real-time validation until the first blur or submit gives a friendlier experience than flagging errors on the first keystroke.
 
 ## Possible improvements
 
