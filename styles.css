@@ -1,305 +1,196 @@
-/* =========================================================
-   Design tokens
-   ========================================================= */
+/* ===== Colors & font (change these to restyle the whole page) ===== */
 :root {
-  /* Primary */
-  --tomato: hsl(4, 100%, 67%);
-  --tomato-pink: hsl(347, 100%, 67%); /* gradient partner for hover */
-
-  /* Neutral */
-  --dark-slate: hsl(234, 29%, 20%);
-  --charcoal: hsl(235, 18%, 26%);
-  --grey: hsl(231, 7%, 60%);
-  --white: hsl(0, 0%, 100%);
-
-  /* Error tints */
-  --error-bg: hsla(4, 100%, 67%, 0.15);
-
-  /* Typography */
-  --font: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  --fs-body: 1rem;       /* 16px */
-  --fs-small: 0.75rem;   /* 12px */
-  --fs-title-mobile: 2.5rem;  /* 40px */
-  --fs-title-desktop: 3.5rem; /* 56px */
-
-  /* Shape */
-  --radius-card: 2.25rem;
-  --radius-control: 0.5rem;
-
-  --transition: 0.2s ease;
+  --background: #141413;   /* dark page background (tablet & desktop) */
+  --glow-gold: #342d24;    /* warm glow, top left */
+  --glow-rust: #523c34;    /* warm glow, bottom right */
+  --card: #F2E3D8;         /* beige card */
+  --text: #3A2622;
+  --text-light: #7A5E55;
+  --accent: #F0A93B;       /* honey: focus ring and envelope dot */
+  --check: #C9C7BC;        /* soft grey check circles */
+  --button: #4A2530;
+  --button-hover: #7A3A3A;
+  --error: #C03A25;
+  --border: #4A4040;       /* dark input border */
+  --envelope: #E9692C;     /* envelope outline */
 }
 
-/* =========================================================
-   Minimal reset for cross-browser consistency
-   ========================================================= */
-*,
-*::before,
-*::after {
+/* ===== Basic reset ===== */
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  font-family: var(--font);
-  font-size: var(--fs-body);
-  line-height: 1.5;
-  color: var(--dark-slate);
-  background-color: var(--white); /* mobile: card fills the screen */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-button,
-input {
-  font: inherit;
-  color: inherit;
-}
-
+/* Make sure hidden sections stay hidden */
 [hidden] {
   display: none !important;
 }
 
-/* =========================================================
-   Page layout (mobile first)
-   ========================================================= */
-.page {
-  min-height: 100vh;
-  min-height: 100dvh;
+body {
+  font-family: "Figtree", Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--card); /* on mobile, the card fills the screen */
 }
 
-/* ---------- Sign-up card ---------- */
-.card {
-  display: flex;
-  flex-direction: column-reverse; /* illustration on top on mobile */
-  background-color: var(--white);
+/* ===== Card (mobile: one centered column) ===== */
+.card,
+.success {
+  background-color: var(--card);
+  padding: 3rem 1.5rem;
+  text-align: center;
 }
 
-.card__illustration {
-  height: 284px;
-  overflow: hidden;
-  border-radius: 0 0 1rem 1rem;
+h1,
+h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
 }
 
-.illustration {
-  width: 100%;
-  height: 100%;
-}
-
-.card__content {
-  padding: 2.5rem 1.5rem;
-}
-
-.card__title {
-  font-size: var(--fs-title-mobile);
-  font-weight: 700;
-  line-height: 1;
+.card__intro,
+.success__text {
+  color: var(--text-light);
   margin-bottom: 1.5rem;
 }
 
-.card__intro {
-  margin-bottom: 1.5rem;
+/* ===== Envelope icon ===== */
+.envelope {
+  margin: 0 auto 1.5rem;
 }
 
-/* ---------- Benefits list with custom check icons ---------- */
+.envelope__body {
+  fill: white;
+  stroke: var(--envelope);
+  stroke-width: 4;
+}
+
+.envelope__flap {
+  fill: none;
+  stroke: var(--envelope);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.envelope__dot {
+  fill: var(--accent);
+  stroke: var(--card);
+  stroke-width: 3;
+}
+
+/* ===== List with check marks (left-aligned inside the centered card) ===== */
 .benefits {
   list-style: none;
-  display: grid;
-  gap: 0.625rem;
-  margin-bottom: 2.5rem;
+  display: inline-block;
+  text-align: left;
+  margin-bottom: 2rem;
 }
 
 .benefits__item {
-  position: relative;
-  padding-left: 2.5rem;
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .benefits__item::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1.3125rem;
-  height: 1.3125rem;
+  content: "✓";
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-top: 0.1rem;
   border-radius: 50%;
-  background-color: var(--tomato);
-  /* white check mark drawn as an inline SVG */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath d='M6 10.5l3 3 6-6' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
+  background-color: var(--check);
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4rem;
+  font-size: 0.8rem;
 }
 
-/* =========================================================
-   Form
-   ========================================================= */
+/* ===== Form ===== */
 .form {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.form__group {
-  display: grid;
-  gap: 0.5rem;
+  text-align: left;
 }
 
 .form__label-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-}
-
-.form__label,
-.form__error {
-  font-size: var(--fs-small);
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
 }
 
 .form__error {
-  color: var(--tomato);
-  text-align: right;
+  color: var(--error);
 }
 
 .form__input {
   width: 100%;
   padding: 1rem 1.5rem;
-  border: 1px solid hsla(231, 7%, 60%, 0.5);
-  border-radius: var(--radius-control);
-  background-color: var(--white);
-  color: var(--dark-slate);
-  transition: border-color var(--transition), box-shadow var(--transition),
-    background-color var(--transition), color var(--transition);
-  -webkit-appearance: none;
-  appearance: none;
+  margin-bottom: 1rem;
+  font: inherit;
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  background-color: white;
 }
 
 .form__input::placeholder {
-  color: var(--grey);
-  opacity: 1; /* Firefox lowers placeholder opacity by default */
+  color: #9C8578;
 }
 
 /* Hover & focus states */
 .form__input:hover {
-  border-color: var(--dark-slate);
+  border-color: var(--text);
 }
 
 .form__input:focus {
   outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(240, 169, 59, 0.3);
 }
 
-.form__input:focus-visible {
-  border-color: var(--dark-slate);
-  box-shadow: 0 0 0 3px hsla(234, 29%, 20%, 0.15);
+/* Error state (added by JavaScript) */
+.form__input.error {
+  border-color: var(--error);
+  background-color: #FCEBE4;
 }
 
-/* Error state (set via aria-invalid from JavaScript) */
-.form__input[aria-invalid="true"] {
-  border-color: var(--tomato);
-  background-color: var(--error-bg);
-  color: var(--tomato);
-}
-
-.form__input[aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 3px hsla(4, 100%, 67%, 0.25);
-}
-
-/* Valid state: subtle confirmation while typing */
-.form__input[aria-invalid="false"].is-touched {
-  border-color: hsl(150, 50%, 42%);
-}
-
-/* =========================================================
-   Button
-   ========================================================= */
+/* ===== Button ===== */
 .btn {
-  position: relative;
   width: 100%;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: white;
+  background-color: var(--button);
   border: none;
-  border-radius: var(--radius-control);
-  background-color: var(--dark-slate);
-  color: var(--white);
-  font-weight: 700;
+  border-radius: 50px;
   cursor: pointer;
-  isolation: isolate;
-  overflow: hidden;
-  transition: box-shadow var(--transition);
-}
-
-/* Gradient layer that fades in on hover (gradients can't be transitioned directly) */
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: linear-gradient(to right, var(--tomato-pink), var(--tomato));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.btn:hover::before,
-.btn:focus-visible::before {
-  opacity: 1;
+  transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .btn:hover,
 .btn:focus-visible {
-  box-shadow: 0 16px 32px hsla(4, 100%, 67%, 0.5);
-}
-
-.btn:focus {
-  outline: none;
+  background-color: var(--button-hover);
+  box-shadow: 0 10px 20px -8px rgba(233, 105, 44, 0.7);
 }
 
 .btn:focus-visible {
-  outline: 3px solid var(--dark-slate);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
 
-.btn:active {
-  transform: translateY(1px);
-}
-
-/* =========================================================
-   Success message
-   ========================================================= */
+/* ===== Success message ===== */
 .success {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   min-height: 100vh;
-  min-height: 100dvh;
-  padding: 2.5rem 1.5rem;
-  background-color: var(--white);
-}
-
-.success__content {
-  margin-top: 30%;
+  padding-top: 6rem;
 }
 
 .success__icon {
-  margin-bottom: 2.5rem;
-}
-
-.success__title {
-  font-size: var(--fs-title-mobile);
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 2rem;
 }
 
 .success__title:focus {
@@ -307,109 +198,46 @@ input {
 }
 
 .success__email {
-  font-weight: 700;
-  word-break: break-word;
+  color: var(--text);
 }
 
-/* Gentle reveal when the success state appears */
-.success:not([hidden]),
-.card:not([hidden]) {
-  animation: fade-in 0.35s ease both;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* =========================================================
-   Tablet (≥ 600px): centered card on dark background
-   ========================================================= */
-@media (min-width: 37.5em) {
+/* ===== Tablet (600px and wider): floating card on a dark background ===== */
+@media (min-width: 600px) {
   body {
-    background-color: var(--charcoal);
+    background-color: var(--background);
+    background-image:
+      radial-gradient(circle at 10% 25%, var(--glow-gold), transparent 45%),
+      radial-gradient(circle at 95% 90%, var(--glow-rust), transparent 45%);
+    background-attachment: fixed;
   }
 
   .page {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     padding: 2rem;
   }
 
-  .card {
-    width: 100%;
-    max-width: 38rem;
-    padding: 1.5rem;
-    border-radius: var(--radius-card);
-    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.25);
-  }
-
-  .card__illustration {
-    height: 320px;
-    border-radius: 1rem;
-  }
-
-  .card__content {
-    padding: 2.5rem 1.5rem 1.5rem;
-  }
-
+  .card,
   .success {
+    width: 100%;
+    max-width: 30rem;
     min-height: auto;
-    max-width: 31.5rem;
-    padding: 3rem 4rem 4rem;
-    border-radius: var(--radius-card);
-    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.25);
-    gap: 2.5rem;
-  }
-
-  .success__content {
-    margin-top: 0;
-  }
-
-  .success__icon {
-    margin-bottom: 2rem;
-  }
-
-  .success__title {
-    font-size: var(--fs-title-desktop);
+    padding: 3rem;
+    border-radius: 2rem;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
   }
 }
 
-/* =========================================================
-   Desktop (≥ 900px): side-by-side layout
-   ========================================================= */
-@media (min-width: 56.25em) {
+/* ===== Desktop (900px and wider): roomier card, bigger heading ===== */
+@media (min-width: 900px) {
   .card {
-    flex-direction: row; /* illustration moves to the right */
-    align-items: center;
-    gap: 4rem;
-    max-width: 58rem;
-    padding: 1.5rem 1.5rem 1.5rem 4rem;
+    max-width: 34rem;
+    padding: 3.5rem 4rem;
   }
 
-  .card__content {
-    flex: 1;
-    padding: 0;
-  }
-
-  .card__title {
-    font-size: var(--fs-title-desktop);
-  }
-
-  .card__illustration {
-    flex: 0 0 25rem;
-    height: 37rem;
-  }
-}
-
-/* =========================================================
-   Accessibility: respect reduced-motion preferences
-   ========================================================= */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  h1 {
+    font-size: 2.75rem;
   }
 }
