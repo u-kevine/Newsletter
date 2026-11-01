@@ -21,7 +21,7 @@
   // ---- Validation messages ----
   const MESSAGES = {
     empty: "Email address is required",
-    invalid: "Valid email required",
+    invalid: "Valid email address required (e.g., you@example.com)",
   };
 
   /**
