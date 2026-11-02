@@ -29,7 +29,6 @@ Users can:
 - Mobile-first workflow with media queries
 - Vanilla JavaScript (no libraries or frameworks)
 - [Figtree](https://fonts.google.com/specimen/Figtree) from Google Fonts, with system-font fallbacks
-- An inline SVG illustration (no image files to load)
 
 ## Project structure
 
@@ -78,19 +77,10 @@ Then visit `http://localhost:8000`.
 - The error message is linked to the input with `aria-describedby` and announced through `aria-live="polite"`.
 - Focus moves to the success heading after submitting, and back to the input after dismissing.
 - Decorative SVGs use `aria-hidden="true"` and `focusable="false"`.
-- Keyboard focus is clearly visible (`:focus` ring on the input, `:focus-visible` outline on buttons, with a fallback for older browsers).
+- Keyboard focus is clearly visible (`:focus` ring on the input, `:focus-visible` outline on buttons).
 - Text colors meet WCAG AA contrast (4.5:1 or better), including the error and placeholder text.
-- Animations and transitions are disabled when `prefers-reduced-motion` is set.
+- Transitions are disabled when `prefers-reduced-motion` is set.
 
-## Responsive breakpoints
-
-| Screen width | Layout |
-|---|---|
-| Below 600px | Full-screen beige layout, illustration banner on top; success view fills the screen with the button at the bottom |
-| 600px and up | Centered floating card on a dark background, illustration on top |
-| 900px and up | Two columns: content on the left, illustration on the right |
-
-Hover effects are switched off on touch-only devices (`@media (hover: none)`) so they don't "stick" after a tap.
 
 ## Browser testing
 
@@ -99,7 +89,7 @@ Tested in the latest versions of Google Chrome, Mozilla Firefox, Safari (macOS a
 ## What I learned
 
 - Using `aria-invalid` as the styling hook keeps the visual and accessible states in sync, and avoids bugs where a CSS class and the JavaScript drift apart.
-- Putting decorative background glows in CSS rather than inside the SVG lets the drawing scale to any container without being cropped.
+- Letting the label row wrap (`flex-wrap`) keeps the error message readable on narrow screens without a separate media query.
 
 ## Possible improvements
 
