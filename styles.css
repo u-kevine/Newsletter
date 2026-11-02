@@ -1,31 +1,21 @@
 /* ===== Colors & font (change these to restyle the whole page) ===== */
 :root {
   --background: #141413;   /* dark page background (tablet & desktop) */
-  --glow-gold: #342d24;    /* warm glow, top left */
-  --glow-rust: #523c34;    /* warm glow, bottom right */
   --card: #F2E3D8;         /* beige card */
   --text: #3A2622;
   --text-light: #7A5E55;
   --accent: #F0A93B;       /* honey: focus ring and envelope dot */
-  --check: #C9C7BC;        /* soft grey check circles */
+  --check: #C9C7BC;
   --button: #4A2530;
   --button-hover: #7A3A3A;
-  --error: #C03A25;
-  --border: #4A4040;       /* dark input border */
-  --envelope: #E9692C;     /* envelope outline */
+  --error: #B0331F;        /* darkened slightly to pass WCAG AA contrast */
+  --border: #4A4040;
+  --envelope: #E9692C;
 }
 
-/* ===== Basic reset ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Make sure hidden sections stay hidden */
-[hidden] {
-  display: none !important;
-}
+/* ===== Reset ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 
 body {
   font-family: "Figtree", Arial, sans-serif;
@@ -34,67 +24,30 @@ body {
   background-color: var(--card); /* on mobile, the card fills the screen */
 }
 
-/* ===== Card (mobile: one centered column) ===== */
-.card,
-.success {
+/* Form controls don't inherit fonts in every browser; also drop iOS default styling */
+input, button { font: inherit; -webkit-appearance: none; appearance: none; }
+
+/* ===== Card & success (mobile: full-width, centered) ===== */
+.card, .success {
   background-color: var(--card);
   padding: 3rem 1.5rem;
   text-align: center;
 }
 
-h1,
-h2 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-}
+h1 { font-size: 2.25rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
 
-.card__intro,
-.success__text {
-  color: var(--text-light);
-  margin-bottom: 1.5rem;
-}
+.card__intro, .success__text { color: var(--text-light); margin-bottom: 1.5rem; }
 
-/* ===== Envelope icon ===== */
-.envelope {
-  margin: 0 auto 1.5rem;
-}
+/* ===== Icons ===== */
+.envelope { margin: 0 auto 1.5rem; }
+.envelope__body, .envelope__flap { fill: none; stroke: var(--envelope); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.envelope__body { fill: white; }
+.envelope__dot { fill: var(--accent); stroke: var(--card); stroke-width: 3; }
+.success__icon { margin: 0 auto 2rem; }
 
-.envelope__body {
-  fill: white;
-  stroke: var(--envelope);
-  stroke-width: 4;
-}
-
-.envelope__flap {
-  fill: none;
-  stroke: var(--envelope);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.envelope__dot {
-  fill: var(--accent);
-  stroke: var(--card);
-  stroke-width: 3;
-}
-
-/* ===== List with check marks (left-aligned inside the centered card) ===== */
-.benefits {
-  list-style: none;
-  display: inline-block;
-  text-align: left;
-  margin-bottom: 2rem;
-}
-
-.benefits__item {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
+/* ===== Check-mark list (left-aligned inside the centered card) ===== */
+.benefits { list-style: none; display: inline-block; text-align: left; margin-bottom: 2rem; }
+.benefits__item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
 .benefits__item::before {
   content: "✓";
   flex-shrink: 0;
@@ -103,66 +56,50 @@ h2 {
   margin-top: 0.1rem;
   border-radius: 50%;
   background-color: var(--check);
-  color: var(--text);
   text-align: center;
   line-height: 1.4rem;
   font-size: 0.8rem;
 }
 
 /* ===== Form ===== */
-.form {
-  text-align: left;
-}
+.form { text-align: left; }
 
 .form__label-row {
   display: flex;
+  flex-wrap: wrap;                /* error drops below the label on narrow screens */
   justify-content: space-between;
+  gap: 0 1rem;
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   padding: 0 0.25rem;
 }
 
-.form__error {
-  color: var(--error);
-}
+.form__error { color: var(--error); }
 
 .form__input {
   width: 100%;
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
-  font: inherit;
   border: 1.5px solid var(--border);
   border-radius: 50px;
   background-color: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form__input::placeholder {
-  color: #9C8578;
-}
+.form__input::placeholder { color: #84695E; opacity: 1; } /* Firefox fades placeholders by default */
 
 /* Hover & focus states */
-.form__input:hover {
-  border-color: var(--text);
-}
+.form__input:hover { border-color: var(--button-hover); box-shadow: 0 0 0 3px rgba(122, 58, 58, 0.15); }
+.form__input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(240, 169, 59, 0.35); }
 
-.form__input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(240, 169, 59, 0.3);
-}
+/* Error state: driven by aria-invalid (set in script.js), so visuals match what screen readers hear */
+.form__input[aria-invalid="true"] { border-color: var(--error); background-color: #FCEBE4; color: var(--error); }
 
-/* Error state (added by JavaScript) */
-.form__input.error {
-  border-color: var(--error);
-  background-color: #FCEBE4;
-}
-
-/* ===== Button ===== */
+/* ===== Buttons ===== */
 .btn {
   width: 100%;
   padding: 1rem;
-  font: inherit;
   font-weight: 600;
   color: white;
   background-color: var(--button);
@@ -172,43 +109,31 @@ h2 {
   transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.btn:hover,
-.btn:focus-visible {
+.btn:hover, .btn:focus-visible {
   background-color: var(--button-hover);
   box-shadow: 0 10px 20px -8px rgba(233, 105, 44, 0.7);
 }
+.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.btn:active { transform: translateY(1px); }
 
-.btn:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-}
-
-/* ===== Success message ===== */
+/* ===== Success message (mobile: fills the screen, button at the bottom) ===== */
 .success {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-height: 100vh;
   padding-top: 6rem;
 }
+.success__title:focus { outline: none; }               /* focused by script, not interactive */
+.success__email { color: var(--text); overflow-wrap: anywhere; } /* long emails wrap */
 
-.success__icon {
-  margin: 0 auto 2rem;
-}
-
-.success__title:focus {
-  outline: none;
-}
-
-.success__email {
-  color: var(--text);
-}
-
-/* ===== Tablet (600px and wider): floating card on a dark background ===== */
+/* ===== Tablet (600px+): floating card on a dark, glowing background ===== */
 @media (min-width: 600px) {
   body {
-    background-color: var(--background);
+    background: var(--background) fixed;
     background-image:
-      radial-gradient(circle at 10% 25%, var(--glow-gold), transparent 45%),
-      radial-gradient(circle at 95% 90%, var(--glow-rust), transparent 45%);
-    background-attachment: fixed;
+      radial-gradient(circle at 10% 25%, #342d24, transparent 45%),
+      radial-gradient(circle at 95% 90%, #523c34, transparent 45%);
   }
 
   .page {
@@ -219,8 +144,7 @@ h2 {
     padding: 2rem;
   }
 
-  .card,
-  .success {
+  .card, .success {
     width: 100%;
     max-width: 30rem;
     min-height: auto;
@@ -230,14 +154,13 @@ h2 {
   }
 }
 
-/* ===== Desktop (900px and wider): roomier card, bigger heading ===== */
+/* ===== Desktop (900px+): roomier card, bigger heading ===== */
 @media (min-width: 900px) {
-  .card {
-    max-width: 34rem;
-    padding: 3.5rem 4rem;
-  }
+  .card { max-width: 34rem; padding: 3.5rem 4rem; }
+  .card__title { font-size: 2.75rem; }
+}
 
-  h1 {
-    font-size: 2.75rem;
-  }
+/* ===== Respect users who prefer less motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
 }
