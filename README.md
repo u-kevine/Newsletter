@@ -4,7 +4,7 @@ A responsive newsletter sign-up form built with HTML, CSS and vanilla JavaScript
 
 ## Overview
 
-Users should be able to:
+Users can:
 
 - Add their email and submit the form
 - See a success message with their email after successfully submitting the form
@@ -15,10 +15,10 @@ Users should be able to:
 ## Features
 
 - **Real-time validation** for empty fields and incorrectly formatted emails
-- **Dynamic messages:** error text appears beside the label, and the success view shows the submitted email
-- **Hover and focus states** on the input and both buttons, including a gradient hover effect on the buttons
-- **Mobile-first responsive layout** with three breakpoints
-- **Accessible markup:** labels, ARIA attributes, live regions and focus management
+- **Dynamic messages:** error text appears beside the label, the input turns red, and the success view shows the submitted email
+- **Hover, focus and active states** on the input and both buttons
+- **Mobile-first responsive layout** with two breakpoints (600px and 900px)
+- **Accessible markup:** labels, ARIA attributes, a live region and focus management
 - **Reduced-motion support** for users who prefer less animation
 
 ## Built with
@@ -28,12 +28,13 @@ Users should be able to:
 - Flexbox and CSS Grid
 - Mobile-first workflow with media queries
 - Vanilla JavaScript (no libraries or frameworks)
-- [Roboto](https://fonts.google.com/specimen/Roboto) from Google Fonts
+- [Figtree](https://fonts.google.com/specimen/Figtree) from Google Fonts, with system-font fallbacks
+- An inline SVG illustration (no image files to load)
 
 ## Project structure
 
 ```
-newsletter-signup/
+Newsletter-main/
 ├── index.html   # Page structure: sign-up card and success message
 ├── styles.css   # Design tokens, layout, states and media queries
 ├── script.js    # Validation logic and view switching
@@ -65,47 +66,42 @@ Then visit `http://localhost:8000`.
 2. On submit, the email is trimmed and checked:
    - Empty → "Email address is required"
    - Wrong format → "Valid email required"
-3. After the first submit or blur, the field re-validates on every keystroke, so errors clear as soon as the input becomes valid. Users are not shown an error while typing for the first time.
-4. Invalid input sets `aria-invalid="true"`, which CSS uses to apply the error styling.
+3. After the first submit or blur, the field re-validates on every keystroke, so errors clear as soon as the input becomes valid (and reappear if the field is emptied). Users are not shown an error while typing for the first time.
+4. Invalid input sets `aria-invalid="true"`. The CSS selector `.form__input[aria-invalid="true"]` uses that same attribute for the red error styling, so the visual and screen-reader states always match.
 5. A valid submission hides the form, shows the success message, and inserts the email using `textContent` (which prevents HTML injection).
 6. "Dismiss message" resets the form and returns focus to the email field.
 
 ## Accessibility
 
-- Every input has an associated `<label>`.
+- The input has an associated `<label>`.
 - `type="email"`, `inputmode="email"` and `autocomplete="email"` help with mobile keyboards and autofill.
 - The error message is linked to the input with `aria-describedby` and announced through `aria-live="polite"`.
 - Focus moves to the success heading after submitting, and back to the input after dismissing.
 - Decorative SVGs use `aria-hidden="true"` and `focusable="false"`.
-- Visible keyboard focus styles are provided with `:focus-visible`.
-- Animations are disabled when `prefers-reduced-motion` is set.
+- Keyboard focus is clearly visible (`:focus` ring on the input, `:focus-visible` outline on buttons, with a fallback for older browsers).
+- Text colors meet WCAG AA contrast (4.5:1 or better), including the error and placeholder text.
+- Animations and transitions are disabled when `prefers-reduced-motion` is set.
 
 ## Responsive breakpoints
 
 | Screen width | Layout |
 |---|---|
-| Below 600px | Full-screen white layout, illustration on top |
-| 600px and up | Centered card on a dark background |
+| Below 600px | Full-screen beige layout, illustration banner on top; success view fills the screen with the button at the bottom |
+| 600px and up | Centered floating card on a dark background, illustration on top |
 | 900px and up | Two columns: content on the left, illustration on the right |
+
+Hover effects are switched off on touch-only devices (`@media (hover: none)`) so they don't "stick" after a tap.
 
 ## Browser testing
 
-Tested in the latest versions of:
-
-- Google Chrome
-- Mozilla Firefox
-- Safari (macOS and iOS)
-- Microsoft Edge
-
-Also checked with browser dev tools at common device widths (375px, 768px, 1440px).
+Tested in the latest versions of Google Chrome, Mozilla Firefox, Safari (macOS and iOS) and Microsoft Edge, and with browser dev tools at common device widths (375px, 768px, 1440px).
 
 ## What I learned
 
-- Gradients can't be transitioned directly, so the button hover uses a `::before` pseudo-element with a gradient whose opacity fades in.
-- Using `aria-invalid` as a styling hook keeps the visual and accessible states in sync.
+- Using `aria-invalid` as the styling hook keeps the visual and accessible states in sync, and avoids bugs where a CSS class and the JavaScript drift apart.
+- Putting decorative background glows in CSS rather than inside the SVG lets the drawing scale to any container without being cropped.
 
 ## Possible improvements
 
 - Connect the form to a real email service (e.g. Mailchimp or a custom API).
 - Add a loading state to the submit button while the request is in progress.
-- Swap in the official challenge illustrations using a `<picture>` element.
