@@ -18,26 +18,18 @@
   const successTitle = document.getElementById("success-title");
   const dismissBtn = document.getElementById("dismiss-btn");
 
-  // ---- Validation messages ----
+  // ---- Validation messages (short enough to fit beside the label) ----
   const MESSAGES = {
     empty: "Email address is required",
-    invalid: "Valid email address required (e.g., you@example.com)",
+    invalid: "Valid email required",
   };
 
-  /**
-   * Practical email pattern: something@domain.tld
-   * (no spaces, one "@", at least one dot in the domain, 2+ letter TLD)
-   */
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
 
-  // Real-time validation only kicks in after the first blur or submit,
-  // so users aren't shown an error while they're still typing the first time.
+  // Live validation starts after the first blur or submit, so users aren't
+  // shown an error while they're still typing their address the first time.
   let hasInteracted = false;
 
-  /**
-   * Returns an error key ("empty" | "invalid") or null if the value is valid.
-   * @param {string} value
-   */
   function getError(value) {
     const trimmed = value.trim();
     if (trimmed === "") return "empty";
@@ -45,9 +37,13 @@
     return null;
   }
 
-  /** Displays an error message and marks the field invalid. */
+  /** Displays an error message and marks the field invalid (CSS styles [aria-invalid="true"]). */
   function showError(key) {
-    errorEl.textContent = MESSAGES[key];
+    // Only update the text when it changes, so screen readers don't
+    // re-announce the same message on every keystroke.
+    if (errorEl.textContent !== MESSAGES[key]) {
+      errorEl.textContent = MESSAGES[key];
+    }
     emailInput.setAttribute("aria-invalid", "true");
   }
 
@@ -57,10 +53,6 @@
     emailInput.setAttribute("aria-invalid", "false");
   }
 
-  /**
-   * Validates the field and updates the UI.
-   * @returns {boolean} true when the email is valid
-   */
   function validate() {
     const error = getError(emailInput.value);
     if (error) {
@@ -73,25 +65,25 @@
 
   // ---- Event handlers ----
 
-  // Real-time feedback while typing (after first interaction)
+  // Real-time feedback while typing (after the first interaction).
+  // Covers both cases: clearing the field (empty) and a bad format.
   emailInput.addEventListener("input", function () {
     if (hasInteracted) validate();
   });
 
-  // Validate when the user leaves the field, if they typed something
+  // Validate when the user leaves the field — if they typed something,
+  // or if they've already interacted (e.g. typed, then deleted everything).
   emailInput.addEventListener("blur", function () {
-    if (emailInput.value.trim() !== "") {
+    if (emailInput.value.trim() !== "" || hasInteracted) {
       hasInteracted = true;
-      emailInput.classList.add("is-touched");
       validate();
     }
   });
 
-  // Submit: validate, then show success or focus the field
+  // Submit: validate, then show success or return focus to the field
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     hasInteracted = true;
-    emailInput.classList.add("is-touched");
 
     if (!validate()) {
       emailInput.focus();
@@ -112,7 +104,6 @@
     form.reset();
     errorEl.textContent = "";
     emailInput.removeAttribute("aria-invalid");
-    emailInput.classList.remove("is-touched");
     hasInteracted = false;
 
     successCard.hidden = true;
