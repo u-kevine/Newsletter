@@ -2,7 +2,6 @@
 
 A responsive newsletter sign-up form built with HTML, CSS and vanilla JavaScript, matching the Frontend Mentor design in the `/design` folder. Users can enter their email, get real-time validation feedback, and see a success message that confirms the address they subscribed with.
 
-![Design preview](./design/desktop-preview.jpg)
 
 ## The challenge
 
