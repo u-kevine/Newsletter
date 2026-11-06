@@ -24,12 +24,21 @@
     invalid: "Valid email required",
   };
 
+  /**
+   * Practical email pattern: something@domain.tld
+   * (no spaces, one "@", at least one dot in the domain, 2+ letter TLD)
+   */
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
 
   // Live validation starts after the first blur or submit, so users aren't
   // shown an error while they're still typing their address the first time.
   let hasInteracted = false;
 
+  /**
+   * Returns an error key ("empty" | "invalid") or null if the value is valid.
+   * @param {string} value
+   * @returns {"empty" | "invalid" | null}
+   */
   function getError(value) {
     const trimmed = value.trim();
     if (trimmed === "") return "empty";
@@ -53,6 +62,10 @@
     emailInput.setAttribute("aria-invalid", "false");
   }
 
+  /**
+   * Validates the field and updates the UI.
+   * @returns {boolean} true when the email is valid
+   */
   function validate() {
     const error = getError(emailInput.value);
     if (error) {

@@ -1,163 +1,188 @@
-/* ===== Colors & font (change these to restyle the whole page) ===== */
+/* ===== Fonts (self-hosted from /assets/fonts) ===== */
+@font-face {
+  font-family: "Roboto";
+  src: url("assets/fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("assets/fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ===== Colors from style-guide.md ===== */
 :root {
-  --background: #141413;   /* dark page background (tablet & desktop) */
-  --card: #F2E3D8;         /* beige card */
-  --text: #3A2622;
-  --text-light: #7A5E55;
-  --accent: #F0A93B;       /* honey: focus ring and envelope dot */
-  --check: #C9C7BC;
-  --button: #4A2530;
-  --button-hover: #7A3A3A;
-  --error: #B0331F;        /* darkened slightly to pass WCAG AA contrast */
-  --border: #4A4040;
-  --envelope: #E9692C;
+  --tomato: hsl(4, 100%, 67%);
+  --dark-slate: hsl(234, 29%, 20%);
+  --charcoal: hsl(235, 18%, 26%);
+  --grey: hsl(231, 7%, 60%);
+  --white: hsl(0, 0%, 100%);
+  /* Darker variants so small text passes WCAG AA contrast (4.5:1) */
+  --error-text: hsl(4, 70%, 44%);
+  --placeholder: hsl(231, 7%, 46%);
+  --gradient: linear-gradient(to right, #FF527B, #FF6A3A);
 }
 
 /* ===== Reset ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
+img { display: block; max-width: 100%; height: auto; }
 
 body {
-  font-family: "Figtree", Arial, sans-serif;
-  line-height: 1.6;
-  color: var(--text);
-  background-color: var(--card); /* on mobile, the card fills the screen */
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--dark-slate);
+  background-color: var(--white); /* mobile: white full-screen layout */
 }
 
 /* Form controls don't inherit fonts in every browser; also drop iOS default styling */
 input, button { font: inherit; -webkit-appearance: none; appearance: none; }
 
-/* ===== Card & success (mobile: full-width, centered) ===== */
-.card, .success {
-  background-color: var(--card);
-  padding: 3rem 1.5rem;
-  text-align: center;
+h1 { font-size: 2.5rem; line-height: 1; margin-bottom: 1.5rem; }
+
+/* ===== Sign-up card (mobile: illustration on top, content below) ===== */
+.card__illustration img {
+  width: 100%;
+  border-radius: 0 0 1rem 1rem;
 }
 
-h1 { font-size: 2.25rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+.card__content { padding: 2.5rem 1.5rem; }
 
-.card__intro, .success__text { color: var(--text-light); margin-bottom: 1.5rem; }
-
-/* ===== Icons ===== */
-.envelope { margin: 0 auto 1.5rem; }
-.envelope__body, .envelope__flap { fill: none; stroke: var(--envelope); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
-.envelope__body { fill: white; }
-.envelope__dot { fill: var(--accent); stroke: var(--card); stroke-width: 3; }
-.success__icon { margin: 0 auto 2rem; }
-
-/* ===== Check-mark list (left-aligned inside the centered card) ===== */
-.benefits { list-style: none; display: inline-block; text-align: left; margin-bottom: 2rem; }
-.benefits__item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
-.benefits__item::before {
-  content: "✓";
+/* ===== Check-mark list ===== */
+.benefits { list-style: none; margin: 1.5rem 0 2.5rem; }
+.benefits li { display: flex; gap: 1rem; margin-bottom: 0.625rem; }
+.benefits li::before {
+  content: "";
   flex-shrink: 0;
-  width: 1.4rem;
-  height: 1.4rem;
-  margin-top: 0.1rem;
-  border-radius: 50%;
-  background-color: var(--check);
-  text-align: center;
-  line-height: 1.4rem;
-  font-size: 0.8rem;
+  width: 21px;
+  height: 21px;
+  margin-top: 1px;
+  background: url("assets/images/icon-list.svg") no-repeat center;
 }
 
 /* ===== Form ===== */
-.form { text-align: left; }
-
 .form__label-row {
   display: flex;
-  flex-wrap: wrap;                /* error drops below the label on narrow screens */
+  flex-wrap: wrap;                /* error drops to its own line if space runs out */
   justify-content: space-between;
   gap: 0 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-  padding: 0 0.25rem;
 }
 
-.form__error { color: var(--error); }
+.form__error { color: var(--error-text); }
 
 .form__input {
   width: 100%;
   padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: 50px;
-  background-color: white;
+  margin-bottom: 1.5rem;
+  color: var(--dark-slate);
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  background-color: var(--white);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form__input::placeholder { color: #84695E; opacity: 1; } /* Firefox fades placeholders by default */
+.form__input::placeholder { color: var(--placeholder); opacity: 1; } /* Firefox fades placeholders */
 
 /* Hover & focus states */
-.form__input:hover { border-color: var(--button-hover); box-shadow: 0 0 0 3px rgba(122, 58, 58, 0.15); }
-.form__input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(240, 169, 59, 0.35); }
+.form__input:hover { border-color: var(--dark-slate); cursor: pointer; }
+.form__input:focus {
+  outline: none;
+  border-color: var(--dark-slate);
+  box-shadow: 0 0 0 3px hsla(234, 29%, 20%, 0.2);
+}
 
 /* Error state: driven by aria-invalid (set in script.js), so visuals match what screen readers hear */
-.form__input[aria-invalid="true"] { border-color: var(--error); background-color: #FCEBE4; color: var(--error); }
+.form__input[aria-invalid="true"] {
+  color: var(--error-text);
+  border-color: var(--tomato);
+  background-color: hsla(4, 100%, 67%, 0.15);
+}
+.form__input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px hsla(4, 100%, 67%, 0.3); }
 
 /* ===== Buttons ===== */
 .btn {
   width: 100%;
   padding: 1rem;
-  font-weight: 600;
-  color: white;
-  background-color: var(--button);
+  font-weight: 700;
+  color: var(--white);
+  background-color: var(--dark-slate);
   border: none;
-  border-radius: 50px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 }
 
+/* Hover & keyboard focus: tomato gradient with a glow (from active-states.jpg) */
 .btn:hover, .btn:focus-visible {
-  background-color: var(--button-hover);
-  box-shadow: 0 10px 20px -8px rgba(233, 105, 44, 0.7);
+  background-image: var(--gradient);
+  box-shadow: 0 16px 32px hsla(4, 100%, 67%, 0.5);
 }
-.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.btn:focus-visible { outline: 3px solid var(--dark-slate); outline-offset: 3px; }
 .btn:active { transform: translateY(1px); }
 
-/* ===== Success message (mobile: fills the screen, button at the bottom) ===== */
+/* ===== Success message (mobile: full screen, button at the bottom) ===== */
 .success {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 2.5rem;
   min-height: 100vh;
-  padding-top: 6rem;
+  padding: 9.3rem 1.5rem 2.5rem;
 }
-.success__title:focus { outline: none; }               /* focused by script, not interactive */
-.success__email { color: var(--text); overflow-wrap: anywhere; } /* long emails wrap */
+.success__icon { margin-bottom: 2.5rem; }
+.success h1:focus { outline: none; } /* focused by script, not interactive */
+.success strong { overflow-wrap: anywhere; } /* long emails wrap */
 
-/* ===== Tablet (600px+): floating card on a dark, glowing background ===== */
-@media (min-width: 600px) {
-  body {
-    background: var(--background) fixed;
-    background-image:
-      radial-gradient(circle at 10% 25%, #342d24, transparent 45%),
-      radial-gradient(circle at 95% 90%, #523c34, transparent 45%);
-  }
+/* ===== Tablet (600px+): centered card on the charcoal background ===== */
+@media (min-width: 37.5em) {
+  body { background-color: var(--charcoal); }
 
   .page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 2rem;
+    padding: 2rem 1rem;
   }
 
   .card, .success {
     width: 100%;
-    max-width: 30rem;
-    min-height: auto;
-    padding: 3rem;
-    border-radius: 2rem;
-    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+    background-color: var(--white);
+    border-radius: 2.25rem;
+    box-shadow: 0 15px 60px hsla(0, 0%, 0%, 0.25);
   }
+
+  .card { max-width: 32rem; padding: 1.5rem; }
+  .card__illustration img { border-radius: 1rem; }
+  .card__content { padding: 2.5rem 1rem 1rem; }
+
+  .success {
+    max-width: 31.5rem;
+    min-height: auto;
+    padding: 3rem 4rem 4rem;
+  }
+
+  h1 { font-size: 3.5rem; }
 }
 
-/* ===== Desktop (900px+): roomier card, bigger heading ===== */
-@media (min-width: 900px) {
-  .card { max-width: 34rem; padding: 3.5rem 4rem; }
-  .card__title { font-size: 2.75rem; }
+/* ===== Desktop (960px+): two columns, illustration on the right ===== */
+@media (min-width: 60em) {
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    max-width: 58rem;
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+  }
+
+  .card__illustration { order: 2; flex-shrink: 0; } /* visual order only; content still reads first */
+  .card__content { padding: 0; }
 }
 
 /* ===== Respect users who prefer less motion ===== */

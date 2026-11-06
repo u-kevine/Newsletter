@@ -4,17 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Sign up for monthly product management updates." />
-  <meta name="theme-color" content="#F2E3D8" />
-  <title>Newsletter sign-up form</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png" />
+  <title>Frontend Mentor | Newsletter sign-up form with success message</title>
 
-  <!-- Figtree: a friendly, rounded sans-serif (with system fallbacks in CSS) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap"
-    rel="stylesheet"
-  />
-
+  <!-- Preload the fonts so text renders in Roboto straight away -->
+  <link rel="preload" href="./assets/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="preload" href="./assets/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -22,51 +17,44 @@
     <!-- ================= SIGN-UP CARD ================= -->
     <section class="card" id="signup" aria-labelledby="signup-title">
 
+      <!-- Swaps between the mobile and desktop illustration based on screen width.
+           alt="" because it's decorative. -->
+      <picture class="card__illustration">
+        <source media="(min-width: 60em)" srcset="./assets/images/illustration-sign-up-desktop.svg" />
+        <img src="./assets/images/illustration-sign-up-mobile.svg" alt="" width="375" height="284" />
+      </picture>
 
       <div class="card__content">
-        <!-- Small decorative envelope (hidden from screen readers) -->
-        <svg class="envelope" width="72" height="52" viewBox="0 0 72 52" aria-hidden="true" focusable="false">
-          <rect class="envelope__body" x="3" y="3" width="62" height="44" rx="8" />
-          <path class="envelope__flap" d="M11 12 L34 29 L57 12" />
-          <circle class="envelope__dot" cx="64" cy="8" r="7" />
-        </svg>
+        <h1 id="signup-title">Stay updated!</h1>
 
-        <h1 class="card__title" id="signup-title">Stay updated!</h1>
-
-        <p class="card__intro">
-          Join 60,000+ product managers receiving monthly updates on:
-        </p>
+        <p>Join 60,000+ product managers receiving monthly updates on:</p>
 
         <ul class="benefits">
-          <li class="benefits__item">Product discovery and building what matters</li>
-          <li class="benefits__item">Measuring to ensure updates are a success</li>
-          <li class="benefits__item">And much more!</li>
+          <li>Product discovery and building what matters</li>
+          <li>Measuring to ensure updates are a success</li>
+          <li>And much more!</li>
         </ul>
 
-        <!-- novalidate: we replace the browser's default bubbles with our own accessible messages -->
+        <!-- novalidate: our own accessible messages replace the browser's default bubbles -->
         <form class="form" id="signup-form" action="#" method="post" novalidate>
-          <div class="form__group">
-            <div class="form__label-row">
-              <label class="form__label" for="email">Email address</label>
-              <!-- Error text is announced to screen readers via aria-live -->
-              <span class="form__error" id="email-error" aria-live="polite"></span>
-            </div>
-
-            <input
-              class="form__input"
-              type="email"
-              id="email"
-              name="email"
-              placeholder="email@company.com"
-              autocomplete="email"
-              inputmode="email"
-              spellcheck="false"
-              autocapitalize="off"
-              required
-              aria-required="true"
-              aria-describedby="email-error"
-            />
+          <div class="form__label-row">
+            <label for="email">Email address</label>
+            <!-- Error text is announced to screen readers via aria-live -->
+            <span class="form__error" id="email-error" aria-live="polite"></span>
           </div>
+
+          <input
+            class="form__input"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="email@company.com"
+            autocomplete="email"
+            spellcheck="false"
+            autocapitalize="off"
+            required
+            aria-describedby="email-error"
+          />
 
           <button class="btn" type="submit">Subscribe to monthly newsletter</button>
         </form>
@@ -75,25 +63,16 @@
 
     <!-- ================= SUCCESS MESSAGE ================= -->
     <!-- Only one view is visible at a time, so each has its own h1 -->
-    <section
-      class="success"
-      id="success"
-      aria-labelledby="success-title"
-      hidden
-    >
+    <section class="success" id="success" aria-labelledby="success-title" hidden>
       <div class="success__content">
-        <svg class="success__icon" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-          <circle cx="32" cy="32" r="32" fill="#E9692C" />
-          <path d="M20 33 l8 8 16 -18" fill="none" stroke="#fff" stroke-width="5"
-                stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <img class="success__icon" src="./assets/images/icon-success.svg" alt="" width="64" height="64" />
 
-        <!-- tabindex="-1" lets us move focus here programmatically -->
-        <h1 class="success__title" id="success-title" tabindex="-1">Thanks for subscribing!</h1>
+        <!-- tabindex="-1" lets the script move focus here after submitting -->
+        <h1 id="success-title" tabindex="-1">Thanks for subscribing!</h1>
 
-        <p class="success__text">
+        <p>
           A confirmation email has been sent to
-          <strong class="success__email" id="success-email"></strong>.
+          <strong id="success-email"></strong>.
           Please open it and click the button inside to confirm your subscription.
         </p>
       </div>
